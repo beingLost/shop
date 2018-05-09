@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">  
+      
+<struts>  
+    <constant name="struts.i18n.encoding" value="UTF-8" />  
+    <constant name="struts.action.extension" value="action" />  
+
+
+	<package name="ebuy" namespace="/" extends="struts-default">
+
+        <action name="product_*" class="com.action.ProductAction" method="{1}">
+        	<result name="success">productMain.jsp</result>
+        </action>
+        
+        <action name="news_*" class="com.action.NewsAction" method="{1}">
+        	<result name="success">newsMain.jsp</result>
+        </action>
+        
+        <action name="notice_*" class="com.action.NoticeAction" method="{1}">
+        	<result name="success">noticeMain.jsp</result>
+        </action>
+        
+        <action name="user_*" class="com.action.UserAction" method="{1}">
+        	<result name="register_success">reg-result.jsp</result><!--注册成功-->
+        	<result name="error">login.jsp</result><!--普通用户登录失败-->
+        	<result name="login">index.jsp</result><!--普通用户登录成功-->
+            <result name="userCenter">userCenter.jsp</result><!--用户中心-->
+            <result name="logout" type="redirect">index.jsp</result><!--普通用户退出登录-->
+            <result name="adminLogin" type="redirect">admin/main.jsp</result><!--管理员登录成功-->
+            <result name="adminError">admin/login.jsp</result><!--管理员登录失败-->
+            <result name="logout2" type="redirect">admin/login.jsp</result><!--管理员退出登录-->
+        </action>
+        
+        <action name="comment_*" class="com.action.CommentAction" method="{1}">
+        	<result name="success">comment.jsp</result>
+        	<result name="save" type="redirectAction">comment_list.action</result>
+        </action>
+        
+        <action name="shopping_*" class="com.action.ShoppingAction" method="{1}">
+        	<result name="success">shoppingMain.jsp</result>
+        	<result name="list" type="redirectAction">shopping_list.action</result>
+        </action>
+        
+        <action name="order_*" class="com.action.OrderAction" method="{1}">
+        	<result name="success">shoppingMain.jsp</result>
+        	<result name="orderList">userCenter.jsp</result>
+        </action>
+        
+        <action name="productBigType_*" class="com.action.ProductBigTypeAction" method="{1}">
+        </action>
+        
+        <action name="productSmallType_*" class="com.action.ProductSmallTypeAction" method="{1}">
+        </action>
+        
+        <action name="sys_*" class="com.action.SysAction" method="{1}">
+        </action>
+    </package>
+</struts>   

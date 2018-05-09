@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.po.User" table="t_user" schema="db_ebuy">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="native"/>
+        </id>
+        <property name="address">
+            <column name="address" sql-type="varchar(200)" length="200" not-null="true"/>
+        </property>
+        <property name="birthday">
+            <column name="birthday" sql-type="datetime" not-null="true"/>
+        </property>
+        <property name="dentityCode">
+            <column name="dentityCode" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+        <property name="mobile">
+            <column name="mobile" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+        <property name="password">
+            <column name="password" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+        <property name="sex">
+            <column name="sex" sql-type="varchar(5)" length="5" not-null="true"/>
+        </property>
+        <property name="status">
+            <column name="status" sql-type="int(11)"/>
+        </property>
+        <property name="trueName">
+            <column name="trueName" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+        <property name="userName">
+            <column name="userName" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+
+       <set name="orderList">
+           <key>
+               <column name="userId" sql-type="int(11)" not-null="true"/>
+           </key>
+           <one-to-many class="com.po.Order"/>
+       </set>
+
+    </class>
+</hibernate-mapping>

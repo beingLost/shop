@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<beans xmlns="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:aop="http://www.springframework.org/schema/aop"   
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:jee="http://www.springframework.org/schema/jee"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="    
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">    
+  
+  
+    <bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/db_ebuy">
+		</property>
+		<property name="username" value="root"/>
+		<property name="password" value=""/>
+	</bean>
+      
+    <!-- session工厂 -->  
+    <bean id="sessionFactory"  
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">  
+        <property name="dataSource">  
+            <ref bean="dataSource" />  
+        </property>  
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>  
+        <!-- 自动扫描注解方式配置的hibernate类文件 -->
+        <property name="packagesToScan">
+            <list>
+                <value>com.po</value>
+            </list>
+        </property>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:ProductBigType.hbm.xml</value>
+                <value>classpath:Comment.hbm.xml</value>
+                <value>classpath:News.hbm.xml</value>
+                <value>classpath:Notice.hbm.xml</value>
+                <value>classpath:Order.hbm.xml</value>
+                <value>classpath:OrderProduct.hbm.xml</value>
+                <value>classpath:Product.hbm.xml</value>
+                <value>classpath:ProductSmallType.hbm.xml</value>
+                <value>classpath:User.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/db_ebuy</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+            </props>
+        </property>
+    </bean>  
+  
+    <!-- 配置事务管理器 -->  
+    <bean id="transactionManager"  
+        class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory" />  
+    </bean>  
+  
+    <!-- 配置事务通知属性 -->  
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">  
+        <!-- 定义事务传播属性 -->  
+        <tx:attributes>  
+            <tx:method name="insert*" propagation="REQUIRED" />  
+            <tx:method name="update*" propagation="REQUIRED" />  
+            <tx:method name="edit*" propagation="REQUIRED" />  
+            <tx:method name="save*" propagation="REQUIRED" />  
+            <tx:method name="add*" propagation="REQUIRED" />  
+            <tx:method name="new*" propagation="REQUIRED" />  
+            <tx:method name="set*" propagation="REQUIRED" />  
+            <tx:method name="remove*" propagation="REQUIRED" />  
+            <tx:method name="delete*" propagation="REQUIRED" />  
+            <tx:method name="change*" propagation="REQUIRED" />  
+            <tx:method name="get*" propagation="REQUIRED" read-only="true" />  
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" />  
+            <tx:method name="load*" propagation="REQUIRED" read-only="true" />  
+            <tx:method name="*" propagation="REQUIRED" read-only="true" />  
+        </tx:attributes>  
+    </tx:advice>  
+  
+    <!-- 配置事务切面 -->  
+    <aop:config>  
+        <aop:pointcut id="serviceOperation"
+            expression="execution(* com.service.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
+    </aop:config>
+
+
+
+    <!--Spring 注解配置（annotation-config 和 component-scan的不同）
+    * <context:annotation-config/>的作用：它是对已注册Bean的进行操作的配置，
+      也就是说，Bean需要首先通过某种方式（比如Xml配置，或者其他注解）被注册，
+      然后使用这个配置，可以对已注册的Bean进行进一步操作（比如注入到某个类的内部），
+      也就是说，这个配置是用于“激活”已注册的Bean的，让已注册的Bean开始工作。
+    * <context:component-scan />的作用：
+      <context:component-scan />首先有和<context:annotation-config/>一样的作用，
+      此外，它还可以扫描指定包下的类，将拥有注解的它们注册到Spring中。
+
+    * 综上，也就是说，如果用<context:annotation-config/>，我们还需要配置Xml注册Bean，
+      而使用<context:component-scan />的话，注册的步骤都免了，
+      当然前提是我们对需要扫描的类使用的注解（比如@Componet,@Service），
+      而如果同时使用两个配置的话，<context:annotation-config/>会被忽略掉。-->
+
+     <!--compontent-scan可以扫描类、方法、属性上面的注解； compontent-config只扫描属性上面的注解。-->
+
+
+    <!-- 自动加载构建bean -->
+    <context:component-scan base-package="com" />
+
+</beans>  
