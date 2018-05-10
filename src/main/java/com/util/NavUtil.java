@@ -1,4 +1,4 @@
-package util;
+package com.util;
 
 /**
  * 导航工具类

@@ -1,4 +1,4 @@
-package util;
+package com.util;
 
 /**
  * 分页工具类

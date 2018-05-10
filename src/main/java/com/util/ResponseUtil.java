@@ -1,4 +1,4 @@
-package util;
+package com.util;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
