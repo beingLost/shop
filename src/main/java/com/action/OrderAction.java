@@ -3,11 +3,11 @@ package com.action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.po.*;
 import com.service.OrderService;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.springframework.stereotype.Controller;
 import util.DateUtil;
 import util.ResponseUtil;
@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Controller
-public class OrderAction extends ActionSupport {
+public class OrderAction extends ActionSupport implements ServletRequestAware {
 
     private HttpServletRequest request;
     @Resource
@@ -244,4 +244,8 @@ public class OrderAction extends ActionSupport {
         return null;
     }
 
+    @Override
+    public void setServletRequest(HttpServletRequest httpServletRequest) {
+        this.request = httpServletRequest;
+    }
 }
